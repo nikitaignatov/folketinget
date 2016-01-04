@@ -137,7 +137,8 @@ namespace Folketinget
         {
             var folketinget = typeof(Container)
                 .GetProperties()
-                .Where(x => x.PropertyType.Namespace == typeof(DataServiceQuery<>).Namespace);
+                .Where(x => x.PropertyType.IsGenericType)
+                .Where(x => x.PropertyType.GenericTypeArguments[0].Namespace == typeof(Container).Namespace);
 
             var ctx = string.Join(@"{ get; set; }
             public virtual DbSet<", folketinget.Select(x => x.Name + "> " + x.Name));
